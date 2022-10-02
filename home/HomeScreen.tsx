@@ -1,9 +1,10 @@
+import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
 import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-paper";
-import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs"
 import { RootTabParamList } from "../navigation/RootTabParamList";
 
-export const HomeScreen = ( {navigation}: MaterialBottomTabScreenProps<RootTabParamList, "Home"> ) => {
+type HomeScreenProps = MaterialBottomTabScreenProps<RootTabParamList, "Home">;
+
+export const HomeScreen = ( {navigation}: HomeScreenProps ) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Monster Hotel</Text>
@@ -14,7 +15,6 @@ export const HomeScreen = ( {navigation}: MaterialBottomTabScreenProps<RootTabPa
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alightItems: 'center',
     justifyContent: 'center',
   },

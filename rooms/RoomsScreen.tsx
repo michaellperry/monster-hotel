@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { RoomComponent } from "./RoomComponent";
 
 interface Room {

@@ -1,5 +1,5 @@
 import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { SafeAreaView, StyleSheet, Text } from "react-native";
 import { RootTabParamList } from "../navigation/RootTabParamList";
 
 type HomeScreenProps = MaterialBottomTabScreenProps<RootTabParamList, "Home">;

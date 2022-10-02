@@ -1,19 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
-import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { RootStackParamList } from "../navigation/RootStackParamList";
+import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs"
+import { RootTabParamList } from "../navigation/RootTabParamList";
 
-export const HomeScreen = ( {navigation}: NativeStackScreenProps<RootStackParamList, "Home"> ) => {
-  const navigateToRooms = () => {
-    navigation.push("Rooms");
-  };
-
+export const HomeScreen = ( {navigation}: MaterialBottomTabScreenProps<RootTabParamList, "Home"> ) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Monster Hotel</Text>
-      <Button onPress={() => { navigateToRooms(); }} mode="contained">
-        Rooms
-      </Button>
     </View>
   );
 }

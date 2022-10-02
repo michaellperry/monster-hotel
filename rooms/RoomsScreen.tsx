@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { RoomComponent } from "./RoomComponent";
 
 interface Room {
@@ -19,13 +19,13 @@ const rooms: Room[] = [
 
 export const RoomsScreen = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={rooms}
         renderItem={({ item }) => <RoomComponent roomNumber={item.roomNumber} />}
         keyExtractor={(item) => item.roomNumber}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

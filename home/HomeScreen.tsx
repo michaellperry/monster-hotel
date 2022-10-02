@@ -1,14 +1,14 @@
 import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { RootTabParamList } from "../navigation/RootTabParamList";
 
 type HomeScreenProps = MaterialBottomTabScreenProps<RootTabParamList, "Home">;
 
 export const HomeScreen = ( {navigation}: HomeScreenProps ) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Monster Hotel</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

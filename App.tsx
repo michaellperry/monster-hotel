@@ -5,7 +5,7 @@ import {
   NavigationContainer
 } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, useColorScheme } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import {
   DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperDefaultTheme,
@@ -40,21 +40,19 @@ export default function App() {
 
   return (
     <PaperProvider theme={theme}>
-      <SafeAreaView style={styles.container}>
-        <NavigationContainer theme={theme}>
-          <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeScreen}
-              options={{
-                tabBarIcon: "home",
-              }} />
-            <Tab.Screen name="Rooms" component={RoomsScreen}
-              options={{
-                tabBarIcon: "door-closed",
-              }} />
-          </Tab.Navigator>
-          <StatusBar style="auto" />
-        </NavigationContainer>
-      </SafeAreaView>
+      <NavigationContainer theme={theme}>
+        <Tab.Navigator>
+          <Tab.Screen name="Home" component={HomeScreen}
+            options={{
+              tabBarIcon: "home",
+            }} />
+          <Tab.Screen name="Rooms" component={RoomsScreen}
+            options={{
+              tabBarIcon: "door-closed",
+            }} />
+        </Tab.Navigator>
+        <StatusBar style="auto" />
+      </NavigationContainer>
     </PaperProvider>
   );
 }

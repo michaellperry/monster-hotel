@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
-import { HelperText } from "react-native-paper";
+import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+import { ErrorScreen } from "../components/ErrorScreen";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { RoomsResult } from "./model";
 import { RoomComponent } from "./RoomComponent";
@@ -18,15 +18,7 @@ export const RoomsScreen = () => {
   }
 
   if (error) {
-    return (
-      <View style={styles.container}>
-        <HelperText
-          type="error"
-          style={styles.text}>
-            error.message
-        </HelperText>
-      </View>
-    );
+    return <ErrorScreen error={error} />;
   }
 
   return (
@@ -45,9 +37,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alightItems: 'center',
     justifyContent: 'center',
-  },
-  text: {
-    textAlign: 'center',
-    fontSize: 28,
   }
 });

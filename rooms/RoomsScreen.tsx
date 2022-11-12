@@ -1,27 +1,29 @@
+import { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+import { RoomsResult } from "./model";
 import { RoomComponent } from "./RoomComponent";
 
-interface Room {
-  roomNumber: string;
-}
-
-const rooms: Room[] = [
-  { roomNumber: "101" },
-  { roomNumber: "102" },
-  { roomNumber: "103" },
-  { roomNumber: "201" },
-  { roomNumber: "202" },
-  { roomNumber: "203" },
-  { roomNumber: "301" },
-  { roomNumber: "302" },
-  { roomNumber: "303" },
-];
-
 export const RoomsScreen = () => {
+  const [result, setResult] = useState<RoomsResult | undefined>();
+  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+
+  useEffect(() => {
+    fetch("api/rooms")
+      .then(res => res.json())
+      .then(json => {
+        setResult(json);
+        setStatus("success");
+      })
+      .catch(err => {
+        console.error(err.message);
+        setStatus("error");
+      });
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={rooms}
+        data={result?.rooms}
         renderItem={({ item }) => <RoomComponent roomNumber={item.roomNumber} />}
         keyExtractor={(item) => item.roomNumber}
       />

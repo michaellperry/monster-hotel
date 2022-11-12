@@ -12,6 +12,7 @@ import {
   Provider as PaperProvider
 } from 'react-native-paper';
 import { HomeScreen } from './home/HomeScreen';
+import { useMockServer } from './mock-server';
 import { RootTabParamList } from './navigation/RootTabParamList';
 import { RoomsScreen } from './rooms/RoomsScreen';
 
@@ -37,6 +38,8 @@ const Tab = createMaterialBottomTabNavigator<RootTabParamList>();
 export default function App() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? combinedDarkTheme : combinedDefaultTheme;
+
+  useMockServer();
 
   return (
     <PaperProvider theme={theme}>

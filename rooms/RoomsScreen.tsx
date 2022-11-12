@@ -1,6 +1,6 @@
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
-import { ErrorScreen } from "../components/ErrorScreen";
-import { LoadingScreen } from "../components/LoadingScreen";
+import { ErrorScreen } from "@components/ErrorScreen";
+import { LoadingScreen } from "@components/LoadingScreen";
 import { useRooms } from "./queries";
 import { RoomComponent } from "./RoomComponent";
 

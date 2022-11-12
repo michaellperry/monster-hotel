@@ -4,6 +4,7 @@ import {
   DefaultTheme as NavigationDefaultTheme,
   NavigationContainer
 } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, useColorScheme } from 'react-native';
 import {
@@ -35,6 +36,8 @@ const combinedDarkTheme = {
 
 const Tab = createMaterialBottomTabNavigator<RootTabParamList>();
 
+const queryClient = new QueryClient();
+
 export default function App() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? combinedDarkTheme : combinedDefaultTheme;
@@ -42,21 +45,23 @@ export default function App() {
   useMockServer();
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer theme={theme}>
-        <Tab.Navigator>
-          <Tab.Screen name="Home" component={HomeScreen}
-            options={{
-              tabBarIcon: "home",
-            }} />
-          <Tab.Screen name="Rooms" component={RoomsScreen}
-            options={{
-              tabBarIcon: "door-closed",
-            }} />
-        </Tab.Navigator>
-        <StatusBar style="auto" />
-      </NavigationContainer>
-    </PaperProvider>
+    <QueryClientProvider client={queryClient}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer theme={theme}>
+          <Tab.Navigator>
+            <Tab.Screen name="Home" component={HomeScreen}
+              options={{
+                tabBarIcon: "home",
+              }} />
+            <Tab.Screen name="Rooms" component={RoomsScreen}
+              options={{
+                tabBarIcon: "door-closed",
+              }} />
+          </Tab.Navigator>
+          <StatusBar style="auto" />
+        </NavigationContainer>
+      </PaperProvider>
+    </QueryClientProvider>
   );
 }
 

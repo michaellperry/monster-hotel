@@ -1,29 +1,45 @@
-import { useEffect, useState } from "react";
-import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Colors, HelperText } from "react-native-paper";
 import { RoomsResult } from "./model";
 import { RoomComponent } from "./RoomComponent";
 
 export const RoomsScreen = () => {
-  const [result, setResult] = useState<RoomsResult | undefined>();
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+  const { isLoading, error, data } = useQuery<RoomsResult>({
+    queryKey: ["rooms"],
+    queryFn: () =>
+      fetch("api/rooms")
+        .then(res => res.json())
+  })
 
-  useEffect(() => {
-    fetch("api/rooms")
-      .then(res => res.json())
-      .then(json => {
-        setResult(json);
-        setStatus("success");
-      })
-      .catch(err => {
-        console.error(err.message);
-        setStatus("error");
-      });
-  });
+  if (isLoading) {
+    return (
+      <ActivityIndicator
+        style={styles.container}
+        size="large"
+        animating={true}
+        color={Colors.blue600}>
+
+      </ActivityIndicator>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <HelperText
+          type="error"
+          style={styles.text}>
+            error.message
+        </HelperText>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={result?.rooms}
+        data={data?.rooms}
         renderItem={({ item }) => <RoomComponent roomNumber={item.roomNumber} />}
         keyExtractor={(item) => item.roomNumber}
       />
@@ -39,5 +55,6 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
+    fontSize: 28,
   }
 });

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
-import { ActivityIndicator, Colors, HelperText } from "react-native-paper";
+import { HelperText } from "react-native-paper";
+import { LoadingScreen } from "../components/LoadingScreen";
 import { RoomsResult } from "./model";
 import { RoomComponent } from "./RoomComponent";
 
@@ -13,15 +14,7 @@ export const RoomsScreen = () => {
   })
 
   if (isLoading) {
-    return (
-      <ActivityIndicator
-        style={styles.container}
-        size="large"
-        animating={true}
-        color={Colors.blue600}>
-
-      </ActivityIndicator>
-    );
+    return <LoadingScreen />;
   }
 
   if (error) {

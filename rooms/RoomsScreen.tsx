@@ -1,30 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { ErrorScreen } from "../components/ErrorScreen";
 import { LoadingScreen } from "../components/LoadingScreen";
-import { RoomsResult } from "./model";
+import { useRooms } from "./queries";
 import { RoomComponent } from "./RoomComponent";
 
 export const RoomsScreen = () => {
-  const { isLoading, error, data } = useQuery<RoomsResult>({
-    queryKey: ["rooms"],
-    queryFn: () =>
-      fetch("api/rooms")
-        .then(res => res.json())
-  })
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  const { error, data } = useRooms();
 
   if (error) {
     return <ErrorScreen error={error} />;
   }
 
+  if (!data) {
+    return <LoadingScreen />;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={data?.rooms}
+        data={data.rooms}
         renderItem={({ item }) => <RoomComponent roomNumber={item.roomNumber} />}
         keyExtractor={(item) => item.roomNumber}
       />

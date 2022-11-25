@@ -1,11 +1,10 @@
-import React from 'react';
-import { TabContainer } from './navigation/TabContainer';
+import { StackContainer } from './navigation/StackContainer';
 import { Providers } from "./providers/Providers";
 
 export default function App() {
   return (
     <Providers>
-      <TabContainer />
+      <StackContainer />
     </Providers>
   );
 }

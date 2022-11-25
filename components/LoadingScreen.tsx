@@ -16,7 +16,7 @@ export function LoadingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alightItems: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
   }
 });

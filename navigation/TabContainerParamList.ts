@@ -1,5 +1,6 @@
 
-export type TabContainerParamsList = {
-  Home: undefined;
+export type TabContainerParamList = {
   Rooms: undefined;
+  Requests: undefined;
+  Tasks: undefined;
 };

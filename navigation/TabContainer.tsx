@@ -1,12 +1,13 @@
 import { createMaterialBottomTabNavigator, MaterialBottomTabScreenProps } from '@react-navigation/material-bottom-tabs';
 import { RequestsScreen } from '../requests/RequestsScreen';
-import { TasksScreen } from '../tasks/TasksScreen';
 import { RoomsScreen } from '../rooms/RoomsScreen';
+import { TasksScreen } from '../tasks/TasksScreen';
+import { StackContainerParamsList } from './StackContainerParamsList';
 import { TabContainerParamsList } from './TabContainerParamsList';
 
 const Tab = createMaterialBottomTabNavigator<TabContainerParamsList>();
 
-type TabContainerProps = MaterialBottomTabScreenProps<TabContainerParamsList>;
+type TabContainerProps = MaterialBottomTabScreenProps<StackContainerParamsList, "Tab">;
 
 export const TabContainer = ({}: TabContainerProps) => {
   return (

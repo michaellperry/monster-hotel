@@ -14,7 +14,7 @@ export const StackContainer = () => {
     <Stack.Navigator>
       <Stack.Screen name="ClockIn" component={ClockInScreen}
         options={{
-          title: "Clock-In",
+          title: "Clock In",
         }} />
       <Stack.Screen name="Dashboard" component={DashboardScreen}
         options={{

@@ -1,5 +1,5 @@
 
-export type RootTabParamList = {
+export type TabContainerParamsList = {
   Home: undefined;
   Rooms: undefined;
 };

@@ -1,18 +1,11 @@
 import { ErrorScreen } from "@components/ErrorScreen";
 import { LoadingScreen } from "@components/LoadingScreen";
-import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
-import { CompositeScreenProps } from '@react-navigation/native';
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackContainerParamsList } from "../navigation/StackContainerParamsList";
-import { TabContainerParamsList } from "../navigation/TabContainerParamsList";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+import { TabContainerScreenProps } from "../navigation/TabContainerParamList";
 import { useRooms } from "./queries";
 import { RoomComponent } from "./RoomComponent";
 
-export type RoomsScreenProps = CompositeScreenProps<
-  MaterialBottomTabScreenProps<TabContainerParamsList, "Rooms">,
-  NativeStackScreenProps<StackContainerParamsList>
->;
+export type RoomsScreenProps = TabContainerScreenProps<"Rooms">;
 
 export const RoomsScreen = ({ navigation }: RoomsScreenProps) => {
   const { error, data } = useRooms();

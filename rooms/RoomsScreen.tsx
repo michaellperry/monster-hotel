@@ -23,7 +23,9 @@ export const RoomsScreen = ({ navigation }: RoomsScreenProps) => {
       <FlatList
         data={data.rooms}
         renderItem={({ item }) => <RoomComponent roomNumber={item.roomNumber} onPress={() => {
-          navigation.push("RoomDetail")
+          navigation.push("RoomDetail", {
+            roomNumber: item.roomNumber
+          })
         }} />}
         keyExtractor={(item) => item.roomNumber}
       />

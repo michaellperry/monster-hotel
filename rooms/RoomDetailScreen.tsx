@@ -3,10 +3,15 @@ import { StackContainerScreenProps } from "../navigation/StackContainerParamList
 
 type RoomDetailScreenProps = StackContainerScreenProps<"RoomDetail">;
 
-export const RoomDetailScreen = ({}: RoomDetailScreenProps) => {
+export const RoomDetailScreen = ({ navigation, route }: RoomDetailScreenProps) => {
+  const roomNumber = route.params.roomNumber;
+  navigation.setOptions({
+    title: `Room ${roomNumber}`
+  });
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>Room Detail Screen</Text>
+      <Text style={styles.text}>Room {roomNumber}</Text>
     </SafeAreaView>
   );
 };

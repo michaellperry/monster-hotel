@@ -1,7 +1,6 @@
-import { Avatar, List } from "react-native-paper";
+import { GuestAvatar } from "@components/GuestAvatar";
+import { List } from "react-native-paper";
 import { Room } from "./model";
-
-const defaultImage = require("@assets/default-image.png");
 
 interface RoomProps {
   room: Room;
@@ -14,6 +13,12 @@ export const RoomComponent = ({ room, onPress }: RoomProps) => {
     description={room.guest?.name ?? "Vacant"}
     onPress={onPress}
     left={props =>
-      <Avatar.Image {...props} source={room.guest?.avatar ?? defaultImage} />
+      <GuestAvatar {...props} source={room.guest?.avatar}
+        overlay={room.guest ?
+          room.guest.serviceRequests.length > 0 ?
+            "needs-service" :
+            "occupied" :
+          "vacant"}
+      />
     } />
 }

@@ -22,7 +22,7 @@ export const RoomsScreen = ({ navigation }: RoomsScreenProps) => {
     <SafeAreaView style={styles.container}>
       <FlatList
         data={data.rooms}
-        renderItem={({ item }) => <RoomComponent roomNumber={item.roomNumber} onPress={() => {
+        renderItem={({ item }) => <RoomComponent room={item} onPress={() => {
           navigation.push("RoomDetail", {
             roomNumber: item.roomNumber
           })

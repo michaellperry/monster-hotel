@@ -1,19 +1,19 @@
-import { StyleSheet } from "react-native";
-import { Card } from "react-native-paper";
+import { Avatar, List } from "react-native-paper";
+import { Room } from "./model";
+
+const defaultImage = require("@assets/default-image.png");
 
 interface RoomProps {
-  roomNumber: string;
+  room: Room;
   onPress?(): void;
 }
 
-export const RoomComponent = ({ roomNumber, onPress }: RoomProps) => {
-  return <Card style={styles.card} onPress={onPress}>
-    <Card.Title title={roomNumber} />
-  </Card>
+export const RoomComponent = ({ room, onPress }: RoomProps) => {
+  return <List.Item
+    title={`Room ${room.roomNumber}`}
+    description={room.guest?.name ?? "Vacant"}
+    onPress={onPress}
+    left={props =>
+      <Avatar.Image {...props} source={room.guest?.avatar ?? defaultImage} />
+    } />
 }
-
-const styles = StyleSheet.create({
-  card: {
-    margin: 4,
-  }
-});

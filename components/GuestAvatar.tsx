@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
+import { Image, ImageSourcePropType, StyleSheet, View, ViewProps } from "react-native";
 import { Avatar } from "react-native-paper";
 
 const defaultImage = require("@assets/default-image.png");
@@ -13,6 +13,7 @@ type Overlay = "vacant" | "occupied" | "needs-cleaning" | "needs-service";
 interface GuestAvatarProps {
   overlay: Overlay;
   source?: ImageSourcePropType;
+  size?: number;
 }
 
 function getOverlayImage(overlay: Overlay) {
@@ -28,12 +29,13 @@ function getOverlayImage(overlay: Overlay) {
   }
 }
 
-export const GuestAvatar = ({ source, overlay }: GuestAvatarProps) => {
+export const GuestAvatar = ({ source, overlay, size, style, ...rest }: GuestAvatarProps & ViewProps) => {
   const [ avatarLayout, setAvatarLayout ] = React.useState({ left: 0, top: 0, width: 0, height: 0 });
 
-  return <View style={styles.container}>
+  return <View {...rest} style={[styles.container, style]}>
     <Avatar.Image
       source={source || defaultImage}
+      size={size}
       onLayout={({nativeEvent: { layout: {x: left, y: top, width, height}}}) => {
         setAvatarLayout({ left, top, width, height });
       }} />

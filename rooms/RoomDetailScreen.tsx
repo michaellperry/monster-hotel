@@ -1,7 +1,7 @@
 import { ErrorScreen } from "@components/ErrorScreen";
+import { GuestAvatar } from "@components/GuestAvatar";
 import { LoadingScreen } from "@components/LoadingScreen";
 import { FlatList, SafeAreaView, StyleSheet, Text } from "react-native";
-import { Avatar } from "react-native-paper";
 import { StackContainerScreenProps } from "../navigation/StackContainerParamList";
 import { useRoom } from "./queries";
 
@@ -36,8 +36,9 @@ export const RoomDetailScreen = ({ navigation, route }: RoomDetailScreenProps) =
 
   return (
     <SafeAreaView style={styles.container}>
-      <Avatar.Image
+      <GuestAvatar
         source={data.guest.avatar}
+        overlay={data.guest.serviceRequests.length > 0 ? "needs-service" : "occupied"}
         size={200}
         style={styles.avatar}
       />

@@ -1,9 +1,8 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackContainerParamList } from "navigation/StackContainerParamList";
+import { StackContainerScreenProps } from "navigation/StackContainerParamList";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 
-type ClockInScreenProps = NativeStackScreenProps<StackContainerParamList, "ClockIn">;
+type ClockInScreenProps = StackContainerScreenProps<"ClockIn">;
 
 export const ClockInScreen = ({ navigation }: ClockInScreenProps) => {
   return (

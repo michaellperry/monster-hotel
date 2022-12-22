@@ -6,7 +6,9 @@ export type StackContainerParamList = {
   ClockIn: undefined;
   Dashboard: undefined;
   Tab: NavigatorScreenParams<TabContainerParamList>;
-  RoomDetail: undefined;
+  RoomDetail: {
+    roomNumber: string;
+  };
   RequestDetail: undefined;
   TaskDetail: undefined;
 };

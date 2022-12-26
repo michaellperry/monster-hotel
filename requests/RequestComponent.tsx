@@ -1,4 +1,5 @@
-import { Avatar, List } from "react-native-paper";
+import { GuestAvatar } from "@components/GuestAvatar";
+import { List } from "react-native-paper";
 import { Request } from "./model";
 
 interface RequestProps {
@@ -12,6 +13,8 @@ export const RequestComponent = ({ request, onPress }: RequestProps) => {
     description={`Room ${request.roomNumber}: ${request.guestName}`}
     onPress={onPress}
     left={props =>
-      <Avatar.Image {...props} source={request.guestAvatar} />
+      <GuestAvatar {...props} source={request.guestAvatar}
+        overlay="needs-service"
+        />
     } />
 }

@@ -1,23 +1,13 @@
-import { ErrorScreen } from "@components/ErrorScreen";
-import { LoadingScreen } from "@components/LoadingScreen";
+import { withData, WithDataProps } from "@components/withData";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { TabContainerScreenProps } from "../navigation/TabContainerParamList";
+import { RoomsResult } from "./model";
 import { useRooms } from "./queries";
 import { RoomComponent } from "./RoomComponent";
 
 export type RoomsScreenProps = TabContainerScreenProps<"Rooms">;
 
-export const RoomsScreen = ({ navigation }: RoomsScreenProps) => {
-  const { error, data } = useRooms();
-
-  if (error) {
-    return <ErrorScreen error={error} />;
-  }
-
-  if (!data) {
-    return <LoadingScreen />;
-  }
-
+const RoomsScreenDisplay = ({ data, navigation }: WithDataProps<RoomsResult, RoomsScreenProps>) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -32,6 +22,8 @@ export const RoomsScreen = ({ navigation }: RoomsScreenProps) => {
     </SafeAreaView>
   );
 }
+
+export const RoomsScreen = withData(useRooms)(RoomsScreenDisplay);
 
 const styles = StyleSheet.create({
   container: {

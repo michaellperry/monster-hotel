@@ -1,23 +1,13 @@
-import { ErrorScreen } from "@components/ErrorScreen";
-import { LoadingScreen } from "@components/LoadingScreen";
+import { withData, WithDataProps } from "@components/withData";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { TabContainerScreenProps } from "../navigation/TabContainerParamList";
+import { RequestsResult } from "./model";
 import { useRequests } from "./queries";
 import { RequestComponent } from "./RequestComponent";
 
 export type RequestsScreenProps = TabContainerScreenProps<"Requests">;
 
-export const RequestsScreen = ({ navigation }: RequestsScreenProps) => {
-  const { error, data } = useRequests();
-
-  if (error) {
-    return <ErrorScreen error={error} />;
-  }
-
-  if (!data) {
-    return <LoadingScreen />;
-  }
-
+const RequestsScreenDisplay = ({ data, navigation }: WithDataProps<RequestsResult, RequestsScreenProps>) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -30,6 +20,8 @@ export const RequestsScreen = ({ navigation }: RequestsScreenProps) => {
     </SafeAreaView>
   );
 }
+
+export const RequestsScreen = withData(useRequests)(RequestsScreenDisplay);
 
 const styles = StyleSheet.create({
   container: {

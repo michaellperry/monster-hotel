@@ -13,6 +13,7 @@ module.exports = function(api) {
         {
           alias: {
             "@components": "./components",
+            "@navigation": "./navigation",
             "@assets": "./assets",
           },
         },

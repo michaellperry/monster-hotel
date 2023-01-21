@@ -1,8 +1,8 @@
 import { ErrorScreen } from "@components/ErrorScreen";
 import { GuestAvatar } from "@components/GuestAvatar";
 import { LoadingScreen } from "@components/LoadingScreen";
+import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { FlatList, SafeAreaView, StyleSheet, Text } from "react-native";
-import { StackContainerScreenProps } from "../navigation/StackContainerParamList";
 import { useRoom } from "./queries";
 
 type RoomDetailScreenProps = StackContainerScreenProps<"RoomDetail">;

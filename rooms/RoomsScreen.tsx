@@ -1,6 +1,6 @@
 import { withData, WithDataProps } from "@components/withData";
+import { TabContainerScreenProps } from "@navigation/TabContainerParamList";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
-import { TabContainerScreenProps } from "../navigation/TabContainerParamList";
 import { RoomsResult } from "./model";
 import { useRooms } from "./queries";
 import { RoomComponent } from "./RoomComponent";

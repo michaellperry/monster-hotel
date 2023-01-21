@@ -1,4 +1,4 @@
-import { StackContainerScreenProps } from "navigation/StackContainerParamList";
+import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 

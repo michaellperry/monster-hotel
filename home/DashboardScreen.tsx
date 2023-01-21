@@ -1,26 +1,29 @@
+import { withData, WithDataProps } from "@components/withData";
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
 import { DashboardItem } from "./DashboardItem";
+import { SummaryResult } from "./model";
+import { useSummary } from "./queries";
 
 type DashboardScreenProps = StackContainerScreenProps<"Dashboard">;
 
-export const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
+const DashboardScreenDisplay = ({ data, navigation }: WithDataProps<SummaryResult, DashboardScreenProps>) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{flexDirection: "row"}}>
-        <DashboardItem title="Rooms" icon="door-closed" value={2} onPress={() =>
+        <DashboardItem title="Rooms" icon="door-closed" value={data.occupiedRooms} onPress={() =>
           navigation.push("Tab", { screen: "Rooms" })
         } />
-        <DashboardItem title="Requests" icon="bell" value={1} onPress={() =>
+        <DashboardItem title="Requests" icon="bell" value={data.pendingRequests} onPress={() =>
           navigation.push("Tab", { screen: "Requests" })
         } />
       </View>
       <View style={{flexDirection: "row"}}>
-        <DashboardItem title="Tasks" icon="clipboard-list" value={3} onPress={() =>
+        <DashboardItem title="Tasks" icon="clipboard-list" value={data.pendingTasks} onPress={() =>
           navigation.push("Tab", { screen: "Tasks" })
         } />
-        <DashboardItem title="Alerts" icon="alert" value={1} onPress={() =>
+        <DashboardItem title="Alerts" icon="alert" value={data.pendingAlerts} onPress={() =>
           navigation.push("Tab", { screen: "Alerts" })
         } />
       </View>
@@ -32,6 +35,8 @@ export const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
     </SafeAreaView>
   );
 };
+
+export const DashboardScreen = withData(useSummary)(DashboardScreenDisplay);
 
 const styles = StyleSheet.create({
   container: {

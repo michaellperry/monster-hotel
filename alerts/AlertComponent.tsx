@@ -1,5 +1,7 @@
-import { List } from "react-native-paper";
+import { Avatar, List } from "react-native-paper";
 import { Alert } from "./model";
+
+const figher = require("@assets/fighter.png");
 
 interface AlertProps {
   alert: Alert;
@@ -8,7 +10,11 @@ interface AlertProps {
 
 export const AlertComponent = ({ alert, onPress }: AlertProps) => {
   return <List.Item
-    title={alert.description}
+    title={alert.title}
+    description={alert.description}
     onPress={onPress}
+    left={props =>
+      <Avatar.Image {...props} source={figher} />
+    }
   />
 }

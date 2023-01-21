@@ -25,7 +25,7 @@ const requests: Request[] = [
 ];
 
 const alerts: Alert[] = [
-  { id: "1", description: "Adventurer spotted!" },
+  { id: "1", title: "Adventurer spotted!", description: "A fighter has been spotted in the lobby." },
 ];
 
 export function useMockServer() {

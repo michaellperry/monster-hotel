@@ -13,6 +13,7 @@ import {
   Provider as PaperProvider
 } from 'react-native-paper';
 import { useMockServer } from '../mock-server';
+import { EmployeeContainer } from './EmployeeContainer';
 
 const combinedDefaultTheme = {
   ...PaperDefaultTheme,
@@ -43,8 +44,10 @@ export const Providers = ({ children }: PropsWithChildren) => {
     <QueryClientProvider client={queryClient}>
       <PaperProvider theme={theme}>
         <NavigationContainer theme={theme}>
-          {children}
-          <StatusBar style="auto" />
+          <EmployeeContainer>
+            {children}
+            <StatusBar style="auto" />
+          </EmployeeContainer>
         </NavigationContainer>
       </PaperProvider>
     </QueryClientProvider>

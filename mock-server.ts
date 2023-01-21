@@ -1,3 +1,4 @@
+import { AlertsResult } from "alerts/model";
 import { createServer, Response, Server } from "miragejs";
 import { useEffect, useState } from "react";
 import { Request, RequestsResult } from "./requests/model";
@@ -42,6 +43,11 @@ export function useMockServer() {
         });
         this.get<RequestsResult>("/api/requests", () => {
           return { requests };
+        });
+        this.get<AlertsResult>("/api/alerts", () => {
+          return { alerts: [
+            { id: "1", description: "Adventurer spotted!" },
+          ] };
         });
       },
     }));

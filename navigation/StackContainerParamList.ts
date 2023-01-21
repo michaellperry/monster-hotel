@@ -11,6 +11,7 @@ export type StackContainerParamList = {
   };
   RequestDetail: undefined;
   TaskDetail: undefined;
+  AlertDetail: undefined;
 };
 
 export type StackContainerScreenProps<S extends keyof StackContainerParamList> =

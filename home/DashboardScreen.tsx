@@ -23,6 +23,11 @@ export const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
         Tasks
       </Button>
       <Button style={styles.button} contentStyle={styles.text} mode="contained" onPress={() => {
+          navigation.push("Tab", { screen: "Alerts" });
+        }}>
+        Alerts
+      </Button>
+      <Button style={styles.button} contentStyle={styles.text} mode="contained" onPress={() => {
           navigation.pop();
         }}>
         Clock Out

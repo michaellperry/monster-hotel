@@ -7,6 +7,7 @@ export type TabContainerParamList = {
   Rooms: undefined;
   Requests: undefined;
   Tasks: undefined;
+  Alerts: undefined;
 };
 
 export type TabContainerScreenProps<S extends keyof TabContainerParamList> = CompositeScreenProps<

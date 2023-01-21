@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AlertDetailScreen } from '../alerts/AlertDetailScreen';
 import { ClockInScreen } from '../home/ClockInScreen';
 import { DashboardScreen } from '../home/DashboardScreen';
 import { RequestDetailScreen } from '../requests/RequestDetailScreen';
@@ -37,6 +38,10 @@ export const StackContainer = () => {
       <Stack.Screen name="TaskDetail" component={TaskDetailScreen}
         options={{
           title: "Task Detail",
+        }} />
+      <Stack.Screen name="AlertDetail" component={AlertDetailScreen}
+        options={{
+          title: "Alert Detail",
         }} />
     </Stack.Navigator>
   );

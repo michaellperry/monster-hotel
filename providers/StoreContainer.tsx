@@ -21,6 +21,10 @@ const initialState: StoreData = {
   alertsLoaded: false,
 };
 
+interface ResetAction {
+  type: "RESET";
+}
+
 interface SummaryLoadedAction {
   type: "SUMMARY_LOADED";
   summary: SummaryResult;
@@ -41,10 +45,12 @@ interface AlertHandledAction {
   alertId: string;
 }
 
-type StoreAction = SummaryLoadedAction | AlertsLoadedAction | NewAlertAction | AlertHandledAction;
+type StoreAction = ResetAction | SummaryLoadedAction | AlertsLoadedAction | NewAlertAction | AlertHandledAction;
 
 const updateStore = (store: StoreData, action: StoreAction) => {
   switch (action.type) {
+    case "RESET":
+      return initialState;
     case "SUMMARY_LOADED":
       return {
         ...store,

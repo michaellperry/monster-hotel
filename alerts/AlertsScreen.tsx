@@ -1,47 +1,30 @@
-import { ErrorScreen } from "@components/ErrorScreen";
-import { LoadingScreen } from "@components/LoadingScreen";
+import { withData, WithDataProps } from "@components/withData";
 import { TabContainerScreenProps } from "@navigation/TabContainerParamList";
-import { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import { useStore } from "../providers/StoreContainer";
+import { useAlerts } from "../providers/StoreContainer";
 import { AlertComponent } from "./AlertComponent";
+import { Alert } from "./model";
 
 export type AlertsScreenProps = TabContainerScreenProps<"Alerts">;
 
-export const AlertsScreen = ({ navigation }: AlertsScreenProps) => {
-  const { alerts, alertsLoaded, loadAlerts } = useStore();
-  const [ error, setError ] = useState<Error | null>(null);
-
-  useEffect(() => {
-    loadAlerts()
-      .catch(error => {
-        setError(error);
-      });
-  }, [ loadAlerts, setError ]);
-
-  if (error) {
-    return <ErrorScreen error={error} />;
-  }
-
-  if (!alertsLoaded) {
-    return <LoadingScreen />;
-  }
-
+const AlertsScreenDisplay = ({ data, navigation }: WithDataProps<Alert[], AlertsScreenProps>) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={alerts}
+        data={data}
         renderItem={({ item }) => <AlertComponent alert={item} onPress={() => {
           navigation.push("AlertDetail", { alertId: item.id })
         }} />}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={<Text style={styles.text}>All clear!</Text>}
-        contentContainerStyle={[ { flexGrow: 1 } , alerts.length ? null : { justifyContent: 'center'} ]}
+        contentContainerStyle={[ { flexGrow: 1 } , data.length ? null : { justifyContent: 'center'} ]}
       />
     </SafeAreaView>
   );
 }
+
+export const AlertsScreen = withData(useAlerts)(AlertsScreenDisplay);
 
 const styles = StyleSheet.create({
   container: {

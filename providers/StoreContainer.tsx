@@ -172,3 +172,28 @@ export const useSummary = () => {
     error
   };
 }
+
+export const useAlerts = () => {
+  const [ error, setError ] = useState<Error | undefined>(undefined);
+  const value = useContext(StoreContext);
+  if (!value) {
+    throw new Error("useAlerts must be used within a StoreContainer");
+  }
+
+  useEffect(() => {
+    if (!value.store.alertsLoaded) {
+      fetchAlerts()
+        .then(alerts => {
+          value.dispatch({ type: "ALERTS_LOADED", alerts });
+        })
+        .catch(error => {
+          setError(error);
+        });
+    }
+  }, [value, setError]);
+
+  return {
+    data: value.store.alertsLoaded ? Object.values(value.store.alerts) : undefined,
+    error
+  };
+}

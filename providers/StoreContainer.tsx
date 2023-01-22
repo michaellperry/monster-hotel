@@ -1,23 +1,42 @@
+import { SummaryResult } from "home/model";
 import { createContext, Dispatch, PropsWithChildren, useReducer, useContext } from "react";
 
 interface StoreData {
-
+  summary: SummaryResult;
 }
 
 const initialState: StoreData = {
-
+  summary: {
+    occupiedRooms: 0,
+    pendingRequests: 0,
+    pendingTasks: 0,
+    pendingAlerts: 0
+  }
 };
 
 interface ResetAction {
   type: "RESET";
 }
 
-type StoreAction = ResetAction;
+interface SummaryLoadedAction {
+  type: "SUMMARY_LOADED";
+  summary: SummaryResult;
+}
+
+type StoreAction = ResetAction | SummaryLoadedAction;
 
 const updateStore = (store: StoreData, action: StoreAction) => {
   switch (action.type) {
     case "RESET":
       return initialState;
+    case "SUMMARY_LOADED":
+      return {
+        ...store,
+        summary: action.summary
+      };
+    default:
+      const _exhaustiveCheck: never = action;
+      return store;
   }
 };
 

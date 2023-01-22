@@ -2,6 +2,7 @@ import { withData, WithDataProps } from "@components/withData";
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
+import { useEmployee } from "../providers/EmployeeContainer";
 import { DashboardItem } from "./DashboardItem";
 import { SummaryResult } from "./model";
 import { useSummary } from "./queries";
@@ -9,6 +10,8 @@ import { useSummary } from "./queries";
 type DashboardScreenProps = StackContainerScreenProps<"Dashboard">;
 
 const DashboardScreenDisplay = ({ data, navigation }: WithDataProps<SummaryResult, DashboardScreenProps>) => {
+  const { clockOut } = useEmployee();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{flexDirection: "row"}}>
@@ -28,6 +31,7 @@ const DashboardScreenDisplay = ({ data, navigation }: WithDataProps<SummaryResul
         } />
       </View>
       <Button style={styles.button} contentStyle={styles.text} mode="contained" onPress={() => {
+          clockOut();
           navigation.pop();
         }}>
         Clock Out

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { SummaryResult } from "./model";
 
 export function useSummary() {
@@ -8,4 +8,16 @@ export function useSummary() {
       fetch("api/summary")
         .then(res => res.json())
   });
+}
+
+export function useSummaryUpdate() {
+  const queryClient = useQueryClient();
+  return {
+    updateSummary: (modifier: (summary: SummaryResult) => SummaryResult) => {
+      queryClient.setQueryData<SummaryResult>(["summary"], prior => {
+        const updated = prior ? modifier(prior) : undefined;
+        return updated;
+      });
+    }
+  }
 }

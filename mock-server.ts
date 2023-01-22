@@ -1,4 +1,4 @@
-import { Alert, AlertsResult } from "alerts/model";
+import { AlertsResult } from "alerts/model";
 import { SummaryResult } from "home/model";
 import { createServer, Response, Server } from "miragejs";
 import { useEffect, useState } from "react";
@@ -24,10 +24,6 @@ const requests: Request[] = [
   { id: "103-1", roomNumber: "103", guestName: "Walter Raithe", guestAvatar: wraith, description: "Fresh towels" }
 ];
 
-const alerts: Alert[] = [
-  { id: "1", title: "Adventurer spotted!", description: "A fighter has been spotted in the lobby." },
-];
-
 export function useMockServer() {
   const [server, setServer] = useState<Server | undefined>();
   useEffect(() => {
@@ -40,7 +36,7 @@ export function useMockServer() {
             occupiedRooms: rooms.filter(room => room.guest).length,
             pendingRequests: requests.length,
             pendingTasks: 0,
-            pendingAlerts: alerts.length
+            pendingAlerts: 0
           };
         });
         this.get<RoomsResult>("/api/rooms", () => {
@@ -58,7 +54,7 @@ export function useMockServer() {
           return { requests };
         });
         this.get<AlertsResult>("/api/alerts", () => {
-          return { alerts };
+          return { alerts: [] };
         });
       },
     }));

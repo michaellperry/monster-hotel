@@ -7,7 +7,7 @@ export function ErrorScreen({ error }: { error: any }) {
       <HelperText
         type="error"
         style={styles.text}>
-          error.message
+          {error.message || error}
       </HelperText>
     </View>
   );

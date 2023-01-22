@@ -10,6 +10,15 @@ export function useAlerts() {
   });
 }
 
+export function useAlert(alertId: string) {
+  return useQuery<Alert>({
+    queryKey: ["alert", alertId],
+    queryFn: () =>
+      fetch(`/api/alerts/${alertId}`)
+        .then(res => res.json())
+  });
+}
+
 export function useAlertEvents() {
   const queryClient = useQueryClient();
   return {

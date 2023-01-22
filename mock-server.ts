@@ -1,4 +1,4 @@
-import { AlertsResult } from "alerts/model";
+import { Alert, AlertsResult } from "alerts/model";
 import { SummaryResult } from "home/model";
 import { createServer, Response, Server } from "miragejs";
 import { useEffect, useState } from "react";
@@ -22,6 +22,10 @@ const rooms: Room[] = [
 
 const requests: Request[] = [
   { id: "103-1", roomNumber: "103", guestName: "Walter Raithe", guestAvatar: wraith, description: "Fresh towels" }
+];
+
+const alerts: Alert[] = [
+  { id: "1", title: "Adventurer spotted!", description: "A fighter has been spotted in the lobby." },
 ];
 
 export function useMockServer() {
@@ -55,6 +59,14 @@ export function useMockServer() {
         });
         this.get<AlertsResult>("/api/alerts", () => {
           return { alerts: [] };
+        });
+        this.get("/api/alerts/:id", (schema, request) => {
+          const id = request.params.id;
+          const alert = alerts.find(alert => alert.id === id);
+          if (!alert) {
+            return new Response(404, {}, { error: "Alert not found" });
+          }
+          return alert;
         });
       },
     }));

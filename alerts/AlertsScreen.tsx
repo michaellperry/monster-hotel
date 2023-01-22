@@ -14,7 +14,7 @@ const AlertsScreenDisplay = ({ data, navigation }: WithDataProps<AlertsResult, A
       <FlatList
         data={data.alerts}
         renderItem={({ item }) => <AlertComponent alert={item} onPress={() => {
-          navigation.push("AlertDetail")
+          navigation.push("AlertDetail", { alertId: item.id })
         }} />}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={<Text style={styles.text}>All clear!</Text>}

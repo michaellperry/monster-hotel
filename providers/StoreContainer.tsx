@@ -63,7 +63,7 @@ const updateStore = (store: StoreData, action: StoreAction) => {
         alerts: action.alerts.reduce((acc, alert) => {
           acc[alert.id] = alert;
           return acc;
-        }, {} as { [id: string]: Alert }),
+        }, store.alerts),
         alertsLoaded: true,
       };
     case "NEW_ALERT":

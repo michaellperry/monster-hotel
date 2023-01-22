@@ -4,6 +4,7 @@ import {
   NavigationContainer
 } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AlertDisplayContainer } from '../alerts/AlertDisplayContainer';
 import { StatusBar } from 'expo-status-bar';
 import React, { PropsWithChildren } from 'react';
 import { useColorScheme } from 'react-native';
@@ -45,8 +46,10 @@ export const Providers = ({ children }: PropsWithChildren) => {
       <PaperProvider theme={theme}>
         <NavigationContainer theme={theme}>
           <EmployeeContainer>
-            {children}
-            <StatusBar style="auto" />
+            <AlertDisplayContainer>
+              {children}
+              <StatusBar style="auto" />
+            </AlertDisplayContainer>
           </EmployeeContainer>
         </NavigationContainer>
       </PaperProvider>

@@ -4,8 +4,8 @@ import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useEmployee } from "../providers/EmployeeContainer";
 import { DashboardItem } from "./DashboardItem";
-import { useSummary } from "./hooks";
 import { SummaryResult } from "./model";
+import { useSummary } from "./queries";
 
 type DashboardScreenProps = StackContainerScreenProps<"Dashboard">;
 

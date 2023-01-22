@@ -3,22 +3,22 @@ import { TabContainerScreenProps } from "@navigation/TabContainerParamList";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { AlertComponent } from "./AlertComponent";
-import { useAlerts } from "./hooks";
-import { Alert } from "./model";
+import { AlertsResult } from "./model";
+import { useAlerts } from "./queries";
 
 export type AlertsScreenProps = TabContainerScreenProps<"Alerts">;
 
-const AlertsScreenDisplay = ({ data, navigation }: WithDataProps<Alert[], AlertsScreenProps>) => {
+const AlertsScreenDisplay = ({ data, navigation }: WithDataProps<AlertsResult, AlertsScreenProps>) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={data}
+        data={data.alerts}
         renderItem={({ item }) => <AlertComponent alert={item} onPress={() => {
           navigation.push("AlertDetail", { alertId: item.id })
         }} />}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={<Text style={styles.text}>All clear!</Text>}
-        contentContainerStyle={[ { flexGrow: 1 } , data.length ? null : { justifyContent: 'center'} ]}
+        contentContainerStyle={[ { flexGrow: 1 } , data.alerts.length ? null : { justifyContent: 'center'} ]}
       />
     </SafeAreaView>
   );

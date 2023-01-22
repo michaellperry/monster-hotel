@@ -126,26 +126,7 @@ export const useStore = () => {
   if (!value) {
     throw new Error("useStore must be used within a StoreContainer");
   }
-  return {
-    summary: value.store.summary,
-    summaryLoaded: value.store.summaryLoaded,
-    loadSummary: async () => {
-      if (!value.store.summaryLoaded) {
-        const summary: SummaryResult = await fetchSummary();
-        value.dispatch({ type: "SUMMARY_LOADED", summary });
-      }
-    },
-    alerts: Object.values(value.store.alerts),
-    alertsLoaded: value.store.alertsLoaded,
-    loadAlerts: async () => {
-      if (!value.store.alertsLoaded) {
-        const alerts = await fetchAlerts();
-        value.dispatch({ type: "ALERTS_LOADED", alerts });
-      }
-    },
-    getAlert: (id: string) => value.store.alerts[id],
-    dispatch: value.dispatch,
-  };
+  return value;
 }
 
 export const useSummary = () => {

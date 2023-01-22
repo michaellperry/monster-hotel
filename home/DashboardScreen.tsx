@@ -1,5 +1,8 @@
+import { ErrorScreen } from "@components/ErrorScreen";
+import { LoadingScreen } from "@components/LoadingScreen";
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { useStore } from "providers/StoreContainer";
+import { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useEmployee } from "../providers/EmployeeContainer";
@@ -9,7 +12,22 @@ type DashboardScreenProps = StackContainerScreenProps<"Dashboard">;
 
 export const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
   const { clockOut } = useEmployee();
-  const { summary } = useStore();
+  const { summary, summaryLoaded, loadSummary } = useStore();
+  const [ error, setError ] = useState<Error | null>(null);
+
+  useEffect(() => {
+    loadSummary().catch(error => {
+      setError(error);
+    });
+  }, [ loadSummary, setError ]);
+
+  if (error) {
+    return <ErrorScreen error={error} />
+  }
+
+  if (!summaryLoaded) {
+    return <LoadingScreen />
+  }
 
   return (
     <SafeAreaView style={styles.container}>

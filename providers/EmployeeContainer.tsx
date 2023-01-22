@@ -1,5 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { Alert } from "../alerts/model";
+import { useStore } from "./StoreContainer";
 
 interface EmployeeState {
   clockIn: () => void;
@@ -16,6 +17,7 @@ export type AlertSubscription = number;
 export const EmployeeContainer = ({ children }: PropsWithChildren) => {
   const [ clockedIn, setClockedIn ] = useState<boolean>(false);
   const [ listeners, setListeners ] = useState<{ [key: number]: AlertListener}>({});
+  const { dispatch } = useStore();
 
   useEffect(() => {
     const timeout = clockedIn ? setTimeout(() => {
@@ -45,6 +47,7 @@ export const EmployeeContainer = ({ children }: PropsWithChildren) => {
       },
       clockOut: () => {
         setClockedIn(false);
+        dispatch({ type: "RESET" });
       },
       subscribe: (listener: AlertListener) => {
         const keys = Object.keys(listeners);

@@ -1,16 +1,19 @@
-import { useAlertNotification } from "../providers/EmployeeContainer";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Snackbar } from "react-native-paper";
+import { useAlertNotification } from "../providers/EmployeeContainer";
+import { useStore } from "../providers/StoreContainer";
 import { Alert } from "./model";
 
 export const AlertDisplayContainer = ({ children }: PropsWithChildren) => {
   const [ alert, setAlert ] = useState<Alert | null>(null);
   const { subscribe, unsubscribe } = useAlertNotification();
+  const { dispatch } = useStore();
 
   useEffect(() => {
     const subscription = subscribe(alert => {
       setAlert(alert);
+      dispatch({ type: "NEW_ALERT", alert });
     });
 
     return () => {

@@ -1,9 +1,12 @@
-import { SummaryResult } from "home/model";
-import { createContext, Dispatch, PropsWithChildren, useReducer, useContext } from "react";
+import { createContext, Dispatch, useContext, useReducer } from "react";
+import { Alert } from "../alerts/model";
+import { SummaryResult } from "../home/model";
 
 interface StoreData {
   summary: SummaryResult;
   summaryLoaded: boolean;
+  alerts: { [id: string]: Alert };
+  alertsLoaded: boolean;
 }
 
 const initialState: StoreData = {
@@ -11,9 +14,11 @@ const initialState: StoreData = {
     occupiedRooms: 0,
     pendingRequests: 0,
     pendingTasks: 0,
-    pendingAlerts: 0
+    pendingAlerts: 0,
   },
-  summaryLoaded: false
+  summaryLoaded: false,
+  alerts: {},
+  alertsLoaded: false,
 };
 
 interface ResetAction {
@@ -25,7 +30,22 @@ interface SummaryLoadedAction {
   summary: SummaryResult;
 }
 
-type StoreAction = ResetAction | SummaryLoadedAction;
+interface AlertsLoadedAction {
+  type: "ALERTS_LOADED";
+  alerts: Alert[];
+}
+
+interface NewAlertAction {
+  type: "NEW_ALERT";
+  alert: Alert;
+}
+
+interface AlertHandledAction {
+  type: "ALERT_HANDLED";
+  alertId: string;
+}
+
+type StoreAction = ResetAction | SummaryLoadedAction | AlertsLoadedAction | NewAlertAction | AlertHandledAction;
 
 const updateStore = (store: StoreData, action: StoreAction) => {
   switch (action.type) {
@@ -35,7 +55,39 @@ const updateStore = (store: StoreData, action: StoreAction) => {
       return {
         ...store,
         summary: action.summary,
-        summaryLoaded: true
+        summaryLoaded: true,
+      };
+    case "ALERTS_LOADED":
+      return {
+        ...store,
+        alerts: action.alerts.reduce((acc, alert) => {
+          acc[alert.id] = alert;
+          return acc;
+        }, {} as { [id: string]: Alert }),
+        alertsLoaded: true,
+      };
+    case "NEW_ALERT":
+      const newAlerts = {
+        ...store.alerts,
+        [action.alert.id]: action.alert,
+      };
+      return {
+        ...store,
+        alerts: newAlerts,
+        summary: {
+          ...store.summary,
+          pendingAlerts: Object.keys(newAlerts).length,
+        },
+      };
+    case "ALERT_HANDLED":
+      const { [action.alertId]: _, ...remainingAlerts } = store.alerts;
+      return {
+        ...store,
+        alerts: remainingAlerts,
+        summary: {
+          ...store.summary,
+          pendingAlerts: Object.keys(remainingAlerts).length,
+        },
       };
     default:
       const _exhaustiveCheck: never = action;
@@ -45,18 +97,18 @@ const updateStore = (store: StoreData, action: StoreAction) => {
 
 interface StoreContextValue {
   store: StoreData;
-  dispatch: Dispatch<StoreAction>
+  dispatch: Dispatch<StoreAction>;
 }
 
 const StoreContext = createContext<StoreContextValue | undefined>(undefined);
 
-export const StoreContainer = ({ children }: PropsWithChildren) => {
-  const [ store, dispatch ] = useReducer(updateStore, initialState);
+export const StoreContainer = ({ children }: { children: React.ReactNode }) => {
+  const [store, dispatch] = useReducer(updateStore, initialState);
 
   return (
     <StoreContext.Provider value={{
       store,
-      dispatch
+      dispatch,
     }}>
       {children}
     </StoreContext.Provider>

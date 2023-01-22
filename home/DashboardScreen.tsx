@@ -5,7 +5,7 @@ import { Button } from "react-native-paper";
 import { useEmployee } from "../providers/EmployeeContainer";
 import { DashboardItem } from "./DashboardItem";
 import { SummaryResult } from "./model";
-import { useSummary } from "./queries";
+import { useSummary } from "./hooks";
 
 type DashboardScreenProps = StackContainerScreenProps<"Dashboard">;
 

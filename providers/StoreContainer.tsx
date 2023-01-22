@@ -3,6 +3,7 @@ import { createContext, Dispatch, PropsWithChildren, useReducer, useContext } fr
 
 interface StoreData {
   summary: SummaryResult;
+  summaryLoaded: boolean;
 }
 
 const initialState: StoreData = {
@@ -11,7 +12,8 @@ const initialState: StoreData = {
     pendingRequests: 0,
     pendingTasks: 0,
     pendingAlerts: 0
-  }
+  },
+  summaryLoaded: false
 };
 
 interface ResetAction {
@@ -32,7 +34,8 @@ const updateStore = (store: StoreData, action: StoreAction) => {
     case "SUMMARY_LOADED":
       return {
         ...store,
-        summary: action.summary
+        summary: action.summary,
+        summaryLoaded: true
       };
     default:
       const _exhaustiveCheck: never = action;

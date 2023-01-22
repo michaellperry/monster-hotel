@@ -109,12 +109,6 @@ export const StoreContainer = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-async function fetchSummary() {
-  const response = await fetch("/api/summary");
-  const summary: SummaryResult = await response.json();
-  return summary;
-}
-
 async function fetchAlerts(): Promise<Alert[]> {
   const response = await fetch("/api/alerts");
   const result: AlertsResult = await response.json();
@@ -127,31 +121,6 @@ export const useStore = () => {
     throw new Error("useStore must be used within a StoreContainer");
   }
   return value;
-}
-
-export const useSummary = () => {
-  const [ error, setError ] = useState<Error | undefined>(undefined);
-  const value = useContext(StoreContext);
-  if (!value) {
-    throw new Error("useSummary must be used within a StoreContainer");
-  }
-
-  useEffect(() => {
-    if (!value.store.summaryLoaded) {
-      fetchSummary()
-        .then(summary => {
-          value.dispatch({ type: "SUMMARY_LOADED", summary });
-        })
-        .catch(error => {
-          setError(error);
-        });
-    }
-  }, [value, setError]);
-
-  return {
-    data: value.store.summaryLoaded ? value.store.summary : undefined,
-    error
-  };
 }
 
 export const useAlerts = () => {

@@ -1,10 +1,10 @@
 import { withData, WithDataProps } from "@components/withData";
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
-import { useSummary } from "providers/StoreContainer";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useEmployee } from "../providers/EmployeeContainer";
 import { DashboardItem } from "./DashboardItem";
+import { useSummary } from "./hooks";
 import { SummaryResult } from "./model";
 
 type DashboardScreenProps = StackContainerScreenProps<"Dashboard">;

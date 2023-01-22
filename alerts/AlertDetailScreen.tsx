@@ -1,9 +1,8 @@
-import { ErrorScreen } from "@components/ErrorScreen";
 import { LoadingScreen } from "@components/LoadingScreen";
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
 import { Avatar, Button } from "react-native-paper";
-import { useAlert } from "./queries";
+import { useAlert } from "./hooks";
 
 const fighter = require("@assets/fighter.png");
 
@@ -11,13 +10,9 @@ type AlertDetailsScreenProps = StackContainerScreenProps<"AlertDetail">;
 
 export const AlertDetailScreen = ({ route, navigation }: AlertDetailsScreenProps) => {
   const alertId = route.params.alertId;
-  const { data, error } = useAlert(alertId);
+  const { alert, handleAlert } = useAlert(alertId);
 
-  if (error) {
-    return <ErrorScreen error={error} />;
-  }
-
-  if (!data) {
+  if (!alert) {
     return <LoadingScreen />;
   }
 
@@ -29,10 +24,11 @@ export const AlertDetailScreen = ({ route, navigation }: AlertDetailsScreenProps
         style={styles.avatar}
       />
       <Text style={styles.label}>Alert</Text>
-      <Text style={styles.text}>{data.title}</Text>
+      <Text style={styles.text}>{alert.title}</Text>
       <Text style={styles.label}>Description</Text>
-      <Text style={styles.text}>{data.description}</Text>
+      <Text style={styles.text}>{alert.description}</Text>
       <Button style={styles.button} contentStyle={styles.buttonText} mode="contained" onPress={() => {
+        handleAlert();
         navigation.goBack();
       }}>
         Handle alert

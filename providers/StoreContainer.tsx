@@ -1,5 +1,5 @@
-import { createContext, Dispatch, useContext, useEffect, useReducer, useState } from "react";
-import { Alert, AlertsResult } from "../alerts/model";
+import { createContext, Dispatch, useContext, useReducer } from "react";
+import { Alert } from "../alerts/model";
 import { SummaryResult } from "../home/model";
 
 interface StoreData {
@@ -109,50 +109,10 @@ export const StoreContainer = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-async function fetchAlerts(): Promise<Alert[]> {
-  const response = await fetch("/api/alerts");
-  const result: AlertsResult = await response.json();
-  return result.alerts;
-}
-
 export const useStore = () => {
   const value = useContext(StoreContext);
   if (!value) {
     throw new Error("useStore must be used within a StoreContainer");
   }
   return value;
-}
-
-export const useAlerts = () => {
-  const [ error, setError ] = useState<Error | undefined>(undefined);
-  const value = useContext(StoreContext);
-  if (!value) {
-    throw new Error("useAlerts must be used within a StoreContainer");
-  }
-
-  useEffect(() => {
-    if (!value.store.alertsLoaded) {
-      fetchAlerts()
-        .then(alerts => {
-          value.dispatch({ type: "ALERTS_LOADED", alerts });
-        })
-        .catch(error => {
-          setError(error);
-        });
-    }
-  }, [value, setError]);
-
-  return {
-    data: value.store.alertsLoaded ? Object.values(value.store.alerts) : undefined,
-    error
-  };
-}
-
-export const useAlert = (id: string) => {
-  const value = useContext(StoreContext);
-  if (!value) {
-    throw new Error("useAlert must be used within a StoreContainer");
-  }
-
-  return value.store.alerts.hasOwnProperty(id) ? value.store.alerts[id] : undefined;
 }

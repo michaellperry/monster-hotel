@@ -2,8 +2,8 @@ import { withData, WithDataProps } from "@components/withData";
 import { TabContainerScreenProps } from "@navigation/TabContainerParamList";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import { useAlerts } from "../providers/StoreContainer";
 import { AlertComponent } from "./AlertComponent";
+import { useAlerts } from "./hooks";
 import { Alert } from "./model";
 
 export type AlertsScreenProps = TabContainerScreenProps<"Alerts">;

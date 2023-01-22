@@ -2,7 +2,7 @@ import { ErrorScreen } from "@components/ErrorScreen";
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
 import { Avatar } from "react-native-paper";
-import { useAlert } from "../providers/StoreContainer";
+import { useAlert } from "./hooks";
 
 const fighter = require("@assets/fighter.png");
 

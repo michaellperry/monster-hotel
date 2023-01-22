@@ -40,7 +40,7 @@ export function useMockServer() {
             occupiedRooms: rooms.filter(room => room.guest).length,
             pendingRequests: requests.length,
             pendingTasks: 0,
-            pendingAlerts: alerts.length
+            pendingAlerts: 0
           };
         });
         this.get<RoomsResult>("/api/rooms", () => {
@@ -58,7 +58,8 @@ export function useMockServer() {
           return { requests };
         });
         this.get<AlertsResult>("/api/alerts", () => {
-          return { alerts };
+          return { alerts: [] };
+        });
         this.get("/api/alerts/:id", (schema, request) => {
           const id = request.params.id;
           const alert = alerts.find(alert => alert.id === id);

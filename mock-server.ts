@@ -59,6 +59,13 @@ export function useMockServer() {
         });
         this.get<AlertsResult>("/api/alerts", () => {
           return { alerts };
+        this.get("/api/alerts/:id", (schema, request) => {
+          const id = request.params.id;
+          const alert = alerts.find(alert => alert.id === id);
+          if (!alert) {
+            return new Response(404, {}, { error: "Alert not found" });
+          }
+          return alert;
         });
       },
     }));

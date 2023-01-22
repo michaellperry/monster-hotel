@@ -1,4 +1,4 @@
-import { createContext, Dispatch, useContext, useReducer } from "react";
+import { createContext, Dispatch, useContext, useEffect, useReducer, useState } from "react";
 import { Alert, AlertsResult } from "../alerts/model";
 import { SummaryResult } from "../home/model";
 
@@ -145,5 +145,30 @@ export const useStore = () => {
     },
     getAlert: (id: string) => value.store.alerts[id],
     dispatch: value.dispatch,
+  };
+}
+
+export const useSummary = () => {
+  const [ error, setError ] = useState<Error | undefined>(undefined);
+  const value = useContext(StoreContext);
+  if (!value) {
+    throw new Error("useSummary must be used within a StoreContainer");
+  }
+
+  useEffect(() => {
+    if (!value.store.summaryLoaded) {
+      fetchSummary()
+        .then(summary => {
+          value.dispatch({ type: "SUMMARY_LOADED", summary });
+        })
+        .catch(error => {
+          setError(error);
+        });
+    }
+  }, [value, setError]);
+
+  return {
+    data: value.store.summaryLoaded ? value.store.summary : undefined,
+    error
   };
 }

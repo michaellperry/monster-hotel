@@ -15,6 +15,7 @@ import {
 import { AlertDisplayContainer } from '../alerts/AlertDisplayContainer';
 import { useMockServer } from '../mock-server';
 import { EmployeeContainer } from './EmployeeContainer';
+import { StoreContainer } from './StoreContainer';
 
 const combinedDefaultTheme = {
   ...PaperDefaultTheme,
@@ -43,16 +44,18 @@ export const Providers = ({ children }: PropsWithChildren) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer theme={theme}>
-          <EmployeeContainer>
-            <AlertDisplayContainer>
-              {children}
-              <StatusBar style="auto" />
-            </AlertDisplayContainer>
-          </EmployeeContainer>
-        </NavigationContainer>
-      </PaperProvider>
+      <StoreContainer>
+        <PaperProvider theme={theme}>
+          <NavigationContainer theme={theme}>
+            <EmployeeContainer>
+              <AlertDisplayContainer>
+                {children}
+                <StatusBar style="auto" />
+              </AlertDisplayContainer>
+            </EmployeeContainer>
+          </NavigationContainer>
+        </PaperProvider>
+      </StoreContainer>
     </QueryClientProvider>
   );
 };

@@ -12,6 +12,7 @@ import {
   DefaultTheme as PaperDefaultTheme,
   Provider as PaperProvider
 } from 'react-native-paper';
+import { AlertDisplayContainer } from '../alerts/AlertDisplayContainer';
 import { useMockServer } from '../mock-server';
 import { EmployeeContainer } from './EmployeeContainer';
 
@@ -45,8 +46,10 @@ export const Providers = ({ children }: PropsWithChildren) => {
       <PaperProvider theme={theme}>
         <NavigationContainer theme={theme}>
           <EmployeeContainer>
-            {children}
-            <StatusBar style="auto" />
+            <AlertDisplayContainer>
+              {children}
+              <StatusBar style="auto" />
+            </AlertDisplayContainer>
           </EmployeeContainer>
         </NavigationContainer>
       </PaperProvider>

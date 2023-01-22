@@ -1,26 +1,34 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Snackbar } from "react-native-paper";
 import { Alert } from "../alerts/model";
 
-interface EmployeeEvents {
+interface EmployeeState {
   clockIn: () => void;
   clockOut: () => void;
+  subscribe: (listener: AlertListener) => AlertSubscription;
+  unsubscribe: (subscription: AlertSubscription) => void;
 }
 
-const EmployeeContext = createContext<EmployeeEvents | undefined>(undefined);
+const EmployeeContext = createContext<EmployeeState | undefined>(undefined);
+
+export type AlertListener = (alert: Alert) => void;
+export type AlertSubscription = number;
 
 export const EmployeeContainer = ({ children }: PropsWithChildren) => {
   const [ clockedIn, setClockedIn ] = useState<boolean>(false);
-  const [ alert, setAlert ] = useState<Alert | null>(null);
+  const [ listeners, setListeners ] = useState<{ [key: number]: AlertListener}>({});
 
   useEffect(() => {
     const timeout = clockedIn ? setTimeout(() => {
-      setAlert({
-        id: "1",
-        title: "Adventurer spotted!",
-        description: "A fighter has been spotted in the lobby."
-      });
+      for (const key in listeners) {
+        if (Object.prototype.hasOwnProperty.call(listeners, key)) {
+          const listener = listeners[key];
+          listener({
+            id: "1",
+            title: "Adventurer spotted!",
+            description: "A fighter has been spotted in the lobby."
+          });
+        }
+      }
     }, 5000) : undefined;
 
     return () => {
@@ -31,41 +39,50 @@ export const EmployeeContainer = ({ children }: PropsWithChildren) => {
   }, [ clockedIn ]);
 
   return (
-    <View style={styles.container}>
-      <EmployeeContext.Provider value={{
-        clockIn: () => {
-          setClockedIn(true);
-        },
-        clockOut: () => {
-          setClockedIn(false);
-        }
-      }}>
-        {children}
-      </EmployeeContext.Provider>
-      <Snackbar
-        visible={!!alert}
-        onDismiss={() => setAlert(null)}
-        action={{
-          label: "Got it",
-          onPress: () => {
-          }
-        }}>
-        {alert?.title}
-      </Snackbar>
-    </View>
+    <EmployeeContext.Provider value={{
+      clockIn: () => {
+        setClockedIn(true);
+      },
+      clockOut: () => {
+        setClockedIn(false);
+      },
+      subscribe: (listener: AlertListener) => {
+        const keys = Object.keys(listeners);
+        const nextKey = keys.length > 0 ? Math.max(...keys.map(key => parseInt(key))) + 1 : 0;
+        setListeners({
+          ...listeners,
+          [nextKey]: listener
+        });
+        return nextKey;
+      },
+      unsubscribe: (subscription: AlertSubscription) => {
+        const { [subscription]: _, ...rest } = listeners;
+        setListeners(rest);
+      }
+    }}>
+      {children}
+    </EmployeeContext.Provider>
   )
 };
 
-export const useEmployeeEvents = () => {
+export const useEmployee = () => {
   const context = useContext(EmployeeContext);
   if (!context) {
-    throw new Error("useAlertNotification must be used within a AlertNotificationContainer");
+    throw new Error("useEmployee must be used within an EmployeeContainer");
   }
-  return context;
+  return {
+    clockIn: context.clockIn,
+    clockOut: context.clockOut
+  };
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+export const useAlertNotification = () => {
+  const context = useContext(EmployeeContext);
+  if (!context) {
+    throw new Error("useAlertNotification must be used within an EmployeeContainer");
   }
-});
+  return {
+    subscribe: context.subscribe,
+    unsubscribe: context.unsubscribe
+  }
+}

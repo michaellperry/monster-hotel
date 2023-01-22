@@ -1,12 +1,12 @@
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
-import { useEmployeeEvents } from "../providers/EmployeeContainer";
+import { useEmployee } from "../providers/EmployeeContainer";
 
 type ClockInScreenProps = StackContainerScreenProps<"ClockIn">;
 
 export const ClockInScreen = ({ navigation }: ClockInScreenProps) => {
-  const { clockIn } = useEmployeeEvents();
+  const { clockIn } = useEmployee();
 
   return (
     <SafeAreaView style={styles.container}>

@@ -2,7 +2,7 @@ import { ErrorScreen } from "@components/ErrorScreen";
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
 import { Avatar } from "react-native-paper";
-import { useStore } from "../providers/StoreContainer";
+import { useAlert } from "../providers/StoreContainer";
 
 const fighter = require("@assets/fighter.png");
 
@@ -10,9 +10,7 @@ type AlertDetailsScreenProps = StackContainerScreenProps<"AlertDetail">;
 
 export const AlertDetailScreen = ({ route }: AlertDetailsScreenProps) => {
   const alertId = route.params.alertId;
-  const { getAlert } = useStore();
-
-  const alert = getAlert(alertId);
+  const alert = useAlert(alertId);
 
   if (!alert) {
     return <ErrorScreen error="Alert not found" />;

@@ -197,3 +197,12 @@ export const useAlerts = () => {
     error
   };
 }
+
+export const useAlert = (id: string) => {
+  const value = useContext(StoreContext);
+  if (!value) {
+    throw new Error("useAlert must be used within a StoreContainer");
+  }
+
+  return value.store.alerts.hasOwnProperty(id) ? value.store.alerts[id] : undefined;
+}

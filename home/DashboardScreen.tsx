@@ -1,32 +1,31 @@
-import { withData, WithDataProps } from "@components/withData";
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
+import { useStore } from "providers/StoreContainer";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useEmployee } from "../providers/EmployeeContainer";
 import { DashboardItem } from "./DashboardItem";
-import { SummaryResult } from "./model";
-import { useSummary } from "./queries";
 
 type DashboardScreenProps = StackContainerScreenProps<"Dashboard">;
 
-const DashboardScreenDisplay = ({ data, navigation }: WithDataProps<SummaryResult, DashboardScreenProps>) => {
+export const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
   const { clockOut } = useEmployee();
+  const { summary } = useStore();
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={{flexDirection: "row"}}>
-        <DashboardItem title="Rooms" icon="door-closed" value={data.occupiedRooms} onPress={() =>
+        <DashboardItem title="Rooms" icon="door-closed" value={summary.occupiedRooms} onPress={() =>
           navigation.push("Tab", { screen: "Rooms" })
         } />
-        <DashboardItem title="Requests" icon="bell" value={data.pendingRequests} onPress={() =>
+        <DashboardItem title="Requests" icon="bell" value={summary.pendingRequests} onPress={() =>
           navigation.push("Tab", { screen: "Requests" })
         } />
       </View>
       <View style={{flexDirection: "row"}}>
-        <DashboardItem title="Tasks" icon="clipboard-list" value={data.pendingTasks} onPress={() =>
+        <DashboardItem title="Tasks" icon="clipboard-list" value={summary.pendingTasks} onPress={() =>
           navigation.push("Tab", { screen: "Tasks" })
         } />
-        <DashboardItem title="Alerts" icon="alert" value={data.pendingAlerts} onPress={() =>
+        <DashboardItem title="Alerts" icon="alert" value={summary.pendingAlerts} onPress={() =>
           navigation.push("Tab", { screen: "Alerts" })
         } />
       </View>
@@ -39,8 +38,6 @@ const DashboardScreenDisplay = ({ data, navigation }: WithDataProps<SummaryResul
     </SafeAreaView>
   );
 };
-
-export const DashboardScreen = withData(useSummary)(DashboardScreenDisplay);
 
 const styles = StyleSheet.create({
   container: {

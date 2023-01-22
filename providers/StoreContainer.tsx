@@ -1,15 +1,30 @@
-import { Alert, AlertsResult } from "../alerts/model";
 import { createContext, Dispatch, useContext, useReducer } from "react";
+import { Alert, AlertsResult } from "../alerts/model";
+import { SummaryResult } from "../home/model";
 
 interface StoreData {
+  summary: SummaryResult;
+  summaryLoaded: boolean;
   alerts: { [id: string]: Alert };
   alertsLoaded: boolean;
 }
 
 const initialState: StoreData = {
+  summary: {
+    occupiedRooms: 0,
+    pendingRequests: 0,
+    pendingTasks: 0,
+    pendingAlerts: 0,
+  },
+  summaryLoaded: false,
   alerts: {},
   alertsLoaded: false,
 };
+
+interface SummaryLoadedAction {
+  type: "SUMMARY_LOADED";
+  summary: SummaryResult;
+}
 
 interface AlertsLoadedAction {
   type: "ALERTS_LOADED";
@@ -26,10 +41,16 @@ interface AlertHandledAction {
   alertId: string;
 }
 
-type StoreAction = AlertsLoadedAction | NewAlertAction | AlertHandledAction;
+type StoreAction = SummaryLoadedAction | AlertsLoadedAction | NewAlertAction | AlertHandledAction;
 
 const updateStore = (store: StoreData, action: StoreAction) => {
   switch (action.type) {
+    case "SUMMARY_LOADED":
+      return {
+        ...store,
+        summary: action.summary,
+        summaryLoaded: true,
+      };
     case "ALERTS_LOADED":
       return {
         ...store,
@@ -40,19 +61,31 @@ const updateStore = (store: StoreData, action: StoreAction) => {
         alertsLoaded: true,
       };
     case "NEW_ALERT":
+      const newAlerts = {
+        ...store.alerts,
+        [action.alert.id]: action.alert,
+      };
       return {
         ...store,
-        alerts: {
-          ...store.alerts,
-          [action.alert.id]: action.alert,
+        alerts: newAlerts,
+        summary: {
+          ...store.summary,
+          pendingAlerts: Object.keys(newAlerts).length,
         },
       };
     case "ALERT_HANDLED":
-      const { [action.alertId]: _, ...rest } = store.alerts;
+      const { [action.alertId]: _, ...remainingAlerts } = store.alerts;
       return {
         ...store,
-        alerts: rest,
+        alerts: remainingAlerts,
+        summary: {
+          ...store.summary,
+          pendingAlerts: Object.keys(remainingAlerts).length,
+        },
       };
+    default:
+      const _exhaustiveCheck: never = action;
+      return store;
   }
 };
 
@@ -76,6 +109,12 @@ export const StoreContainer = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+async function fetchSummary() {
+  const response = await fetch("/api/summary");
+  const summary: SummaryResult = await response.json();
+  return summary;
+}
+
 async function fetchAlerts(): Promise<Alert[]> {
   const response = await fetch("/api/alerts");
   const result: AlertsResult = await response.json();
@@ -88,6 +127,14 @@ export const useStore = () => {
     throw new Error("useStore must be used within a StoreContainer");
   }
   return {
+    summary: value.store.summary,
+    summaryLoaded: value.store.summaryLoaded,
+    loadSummary: async () => {
+      if (!value.store.summaryLoaded) {
+        const summary: SummaryResult = await fetchSummary();
+        value.dispatch({ type: "SUMMARY_LOADED", summary });
+      }
+    },
     alerts: Object.values(value.store.alerts),
     alertsLoaded: value.store.alertsLoaded,
     loadAlerts: async () => {

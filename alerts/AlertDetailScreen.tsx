@@ -1,16 +1,16 @@
 import { ErrorScreen } from "@components/ErrorScreen";
 import { StackContainerScreenProps } from "@navigation/StackContainerParamList";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
-import { Avatar } from "react-native-paper";
+import { Avatar, Button } from "react-native-paper";
 import { useAlert } from "./hooks";
 
 const fighter = require("@assets/fighter.png");
 
 type AlertDetailsScreenProps = StackContainerScreenProps<"AlertDetail">;
 
-export const AlertDetailScreen = ({ route }: AlertDetailsScreenProps) => {
+export const AlertDetailScreen = ({ route, navigation }: AlertDetailsScreenProps) => {
   const alertId = route.params.alertId;
-  const alert = useAlert(alertId);
+  const { alert, handleAlert } = useAlert(alertId);
 
   if (!alert) {
     return <ErrorScreen error="Alert not found" />;
@@ -27,6 +27,12 @@ export const AlertDetailScreen = ({ route }: AlertDetailsScreenProps) => {
       <Text style={styles.text}>{alert.title}</Text>
       <Text style={styles.label}>Description</Text>
       <Text style={styles.text}>{alert.description}</Text>
+      <Button style={styles.button} contentStyle={styles.buttonText} mode="contained" onPress={() => {
+        handleAlert();
+        navigation.goBack();
+      }}>
+        Handle alert
+      </Button>
     </SafeAreaView>
   );
 };
@@ -48,5 +54,12 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 25,
+  },
+  button: {
+    margin: 10,
+    width: 320,
+  },
+  buttonText: {
+    paddingVertical: 10,
   },
 });

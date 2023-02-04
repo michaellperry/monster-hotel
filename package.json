@@ -33,9 +33,11 @@
     "@types/jest": "^29.4.0",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.69.1",
+    "@types/react-test-renderer": "18.0",
     "jest": "^27.5.1",
     "jest-expo": "^47.0.1",
     "miragejs": "^0.1.46",
+    "react-test-renderer": "18.0",
     "typescript": "~4.3.5"
   },
   "private": true,

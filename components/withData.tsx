@@ -4,7 +4,7 @@ import { LoadingScreen } from "./LoadingScreen";
 
 export type WithDataProps<TData, TProps> = { data: TData } & TProps;
 
-interface UseDataResult<TData> {
+export interface UseDataResult<TData> {
   error: unknown;
   data: TData | undefined;
 }
